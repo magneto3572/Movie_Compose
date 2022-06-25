@@ -1,5 +1,8 @@
 # Movie Compose
 A movie application made on jetpack compose using clean architecture with MVVM, Dependency Injection(HILT), Coroutines, Flow etc.
+
+Yes it support Dark Mode TOO :P
+
 <h5>Screenshots</h5>
 
 <div align="center">
