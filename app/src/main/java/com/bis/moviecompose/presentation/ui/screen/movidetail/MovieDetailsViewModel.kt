@@ -17,12 +17,4 @@ import javax.inject.Inject
 class MovieDetailsViewModel @Inject constructor(private val repository : HomeScreenRepository) : ViewModel() {
 
 
-    private val _movieRes = MutableStateFlow<Resource<MovieResponse>>(Resource.Initial)
-    var movieRes: StateFlow<Resource<MovieResponse>> = _movieRes.asStateFlow()
-
-    fun fetchmovie(page : Int) = viewModelScope.launch {
-        _movieRes.value = Resource.Loading
-        _movieRes.value = repository.getMovieList(page);
-    }
-
 }

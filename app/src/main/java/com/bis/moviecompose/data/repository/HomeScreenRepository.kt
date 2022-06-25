@@ -10,4 +10,8 @@ class HomeScreenRepository @Inject constructor(private val api: UserApi): SafeAp
     suspend fun getMovieList(page : Int) = safeApiCall {
         api.getmovieList(page)
     }
+
+    suspend fun getHoriMovieList(page : Int) = safeApiCall {
+        api.gethorimovieList(page)
+    }
 }

@@ -50,11 +50,23 @@ fun HomeMovieGrid(viewModel: HomeScreenViewModel, navController: NavHostControll
         min(1f, 1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex))
     }
     val list = remember{ mutableStateListOf<result>()}
+    val horiList = remember{ mutableStateListOf<result>()}
     val showProgressBarState = remember { mutableStateOf(false) }
     if (showProgressBarState.value) { Loader() }
 
+    setupObersevable(showProgressBarState , viewModel, list, horiList)
+    SetupLayout(list, viewModel, navController, scrollOffset, scrollState, horiList)
+}
+
+@Composable
+fun setupObersevable(
+    showProgressBarState: MutableState<Boolean>,
+    viewModel: HomeScreenViewModel,
+    list: SnapshotStateList<result>,
+    horiList: SnapshotStateList<result>
+) {
     LaunchedEffect(Unit) {
-        viewModel.getData(page)
+        viewModel.fetchallData(page)
         viewModel.movieRes.collect{
             when (it){
                 is Resource.Success->{
@@ -73,8 +85,28 @@ fun HomeMovieGrid(viewModel: HomeScreenViewModel, navController: NavHostControll
             }
         }
     }
-    SetupLayout(list, viewModel, navController, scrollOffset, scrollState)
+
+    LaunchedEffect(Unit){
+        viewModel.horimovieRes.collect{
+            when (it){
+                is Resource.Success->{
+                    showProgressBarState.value = false
+                    horiList.addAll(it.value.results)
+                }
+                is Resource.Loading ->{
+                    showProgressBarState.value = true
+                }
+                is Resource.Failure ->{
+                    showProgressBarState.value = false
+                }
+                else -> {
+                    showProgressBarState.value = false
+                }
+            }
+        }
+    }
 }
+
 
 @Composable
 fun ShowProgressBar() {
@@ -92,13 +124,14 @@ fun SetupLayout(
     viewModel: HomeScreenViewModel,
     navController: NavHostController,
     scrollOffset: State<Float>,
-    scrollState: LazyGridState
+    scrollState: LazyGridState,
+    horiList: SnapshotStateList<result>
 ) {
     Column(modifier = Modifier
         .fillMaxSize()
     ) {
 
-        HoriRow(scrollOffset, list)
+        HoriRow(scrollOffset, horiList)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(125.dp),
             contentPadding = PaddingValues(8.dp),
@@ -124,7 +157,7 @@ fun HoriRow(scrollOffset: State<Float>, list: SnapshotStateList<result>) {
     val value = max(0f, (1f * scrollOffset.value.toFloat()))
     var movietext = "Movie"
 
-    if (imageSize <= 0.dp){
+    if (imageSize == 0.dp){
         movietext = "Now Showing"
     }
 
