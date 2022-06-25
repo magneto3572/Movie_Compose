@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 
 
+
 @Composable
 fun MovieDetailsScreen(
     poster: String,
@@ -34,7 +35,7 @@ fun MovieDetailsScreen(
     val url = "https://image.tmdb.org/t/p/w342/$poster"
     Surface(modifier = Modifier.fillMaxSize()
     ) {
-        Column() {
+        Column {
             Row(verticalAlignment = Alignment.Top,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,33 +60,33 @@ fun MovieDetailsScreen(
                         .padding(10.dp)
                         .fillMaxWidth()
                 ) {
-                    Text(text = title, color = Color.White, fontSize = 18.sp)
+                    Text(text = title, color = colorScheme.onTertiary, fontSize = 18.sp)
                     Column(modifier = Modifier
                         .fillMaxWidth()
                         .padding(0.dp, 10.dp)) {
                         Row() {
-                            Text(text = "Language :  ", color = Color.White, fontSize = 12.sp)
-                            Text(text = language, color = Color.White, fontSize = 14.sp)
+                            Text(text = "Language :  ", color = colorScheme.onTertiary, fontSize = 12.sp)
+                            Text(text = language, color = colorScheme.onTertiary, fontSize = 14.sp)
                         }
 
                         Row() {
-                            Text(text = "Star Rating ", color = Color.White, fontSize = 12.sp)
-                            Text(text = star, color = Color.White, fontSize = 14.sp)
+                            Text(text = "Star Rating ", color = colorScheme.onTertiary, fontSize = 12.sp)
+                            Text(text = star, color = colorScheme.onTertiary, fontSize = 14.sp)
                         }
 
                         Row() {
-                            Text(text = "Release Date :  ", color = Color.White, fontSize = 12.sp)
-                            Text(text = release, color = Color.White, fontSize = 14.sp)
+                            Text(text = "Release Date :  ", color = colorScheme.onTertiary, fontSize = 12.sp)
+                            Text(text = release, color = colorScheme.onTertiary, fontSize = 14.sp)
                         }
                     }
                 }
             }
             
-            Column(modifier = Modifier
-                .fillMaxWidth()
+            Column(modifier = Modifier.background(colorScheme.onBackground)
+                .fillMaxSize()
                 .padding(20.dp)) {
-                Text(text = "Synopsis", color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(0.dp, 10.dp))
-                Text(text = synopsis, color = Color.Black, fontSize = 14.sp)
+                Text(text = "Synopsis", color = colorScheme.tertiary, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(0.dp, 10.dp))
+                Text(text = synopsis, color = colorScheme.tertiary, fontSize = 14.sp)
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.bis.moviecompose.presentation.ui.screen.home
 
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -143,7 +142,6 @@ fun HoriRow(scrollOffset: Float, list: SnapshotStateList<result>) {
         }
         .height(imageSize)
         .fillMaxWidth()) {
-        Log.d("LogTagalpha",value.toString())
         LazyRow(
             state = lazyState,
             verticalAlignment = Alignment.CenterVertically,
@@ -169,7 +167,7 @@ fun HoriRow(scrollOffset: Float, list: SnapshotStateList<result>) {
             }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(text = "Now Showing", fontSize = 16.sp, color = Color.White, modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 5.dp))
+            Text(text = "Now Showing", fontSize = 16.sp, color = Color.White, modifier = Modifier.padding(0.dp, 6.dp, 0.dp, 4.dp))
         }
     }
 }
@@ -230,7 +228,7 @@ fun ItemLayout(destination: result, index: Int, navController: NavHostController
                 contentDescription = destination.title,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .defaultMinSize(125.dp, 150.dp),
+                    .defaultMinSize(125.dp, 180.dp),
             )
         }
     }
