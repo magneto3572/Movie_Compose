@@ -4,7 +4,7 @@ A movie application made on jetpack compose using clean architecture with MVVM, 
 
 <div align="center">
     <img src="/LightHome.jpeg" width="200px" height="350px"</img> 
-     <img src="/LightDetail.jgeg"width="200px" height="350px"</img>
+     <img src="/LightDetail.jpeg"width="200px" height="350px"</img>
      <img src="/DarkHome.jpeg" width="200px" height="350px"</img>
    <img src="/DarkDetail.jpeg" width="200px" height="350px"</img>
 </div>
