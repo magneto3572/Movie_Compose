@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,6 +45,10 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeScreenViewModel)
 
 @Composable
 fun HomeMovieGrid(viewModel: HomeScreenViewModel, navController: NavHostController) {
+    val scrollState = rememberLazyGridState()
+    val scrollOffset = derivedStateOf {
+        min(1f, 1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex))
+    }
     val list = remember{ mutableStateListOf<result>()}
     val showProgressBarState = remember { mutableStateOf(false) }
     if (showProgressBarState.value) { Loader() }
@@ -72,7 +73,7 @@ fun HomeMovieGrid(viewModel: HomeScreenViewModel, navController: NavHostControll
             }
         }
     }
-    SetupLayout(list, viewModel, navController)
+    SetupLayout(list, viewModel, navController, scrollOffset, scrollState)
 }
 
 @Composable
@@ -89,15 +90,14 @@ fun ShowProgressBar() {
 fun SetupLayout(
     list: SnapshotStateList<result>,
     viewModel: HomeScreenViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    scrollOffset: State<Float>,
+    scrollState: LazyGridState
 ) {
     Column(modifier = Modifier
-        .fillMaxSize()) {
-        val scrollState = rememberLazyGridState()
-        val scrollOffset: Float = min(
-            1f,
-            1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex)
-        )
+        .fillMaxSize()
+    ) {
+
         HoriRow(scrollOffset, list)
         LazyVerticalGrid(
             columns = GridCells.Adaptive(125.dp),
@@ -118,10 +118,10 @@ fun SetupLayout(
 }
 
 @Composable
-fun HoriRow(scrollOffset: Float, list: SnapshotStateList<result>) {
+fun HoriRow(scrollOffset: State<Float>, list: SnapshotStateList<result>) {
     val lazyState = rememberLazyListState()
-    val imageSize by animateDpAsState(targetValue = max(0.dp, 230.dp * scrollOffset))
-    val value = max(0f, (1f * scrollOffset.toFloat()))
+    val imageSize by animateDpAsState(targetValue = max(0.dp, 230.dp * scrollOffset.value.toFloat()))
+    val value = max(0f, (1f * scrollOffset.value.toFloat()))
     var movietext = "Movie"
 
     if (imageSize <= 0.dp){
@@ -157,7 +157,8 @@ fun HoriRow(scrollOffset: Float, list: SnapshotStateList<result>) {
                     modifier = Modifier
                         .size(290.dp, 200.dp)
                         .graphicsLayer {
-                            val value = 1 - (lazyState.layoutInfo.normalizedItemPosition(item.id).absoluteValue * 0.05F)
+                            val value =
+                                1 - (lazyState.layoutInfo.normalizedItemPosition(item.id).absoluteValue * 0.05F)
                             alpha = value
                             scaleX = value
                             scaleY = value
@@ -227,8 +228,7 @@ fun ItemLayout(destination: result, index: Int, navController: NavHostController
                 alignment = Alignment.Center,
                 contentDescription = destination.title,
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .defaultMinSize(125.dp, 180.dp),
+                modifier = Modifier.defaultMinSize(125.dp, 180.dp)
             )
         }
     }
