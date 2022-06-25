@@ -85,7 +85,7 @@ fun MovieDetailsScreen(
             Column(modifier = Modifier.background(colorScheme.onBackground)
                 .fillMaxSize()
                 .padding(20.dp)) {
-                Text(text = "Synopsis", color = colorScheme.tertiary, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(0.dp, 10.dp))
+                Text(text = "Synopsis", color = colorScheme.tertiary, fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(0.dp, 10.dp))
                 Text(text = synopsis, color = colorScheme.tertiary, fontSize = 14.sp)
             }
         }
