@@ -53,7 +53,7 @@ fun LazyVerticalGridActivityScreen(destinationViewModel: HomeScreenViewModel = v
         composable("home") {
             HomeScreen(navController, destinationViewModel)
         }
-        composable(route = "details/{title}/{release_date}/{poster_path}",
+        composable(route = "details/{title}/{release_date}/{poster_path}/{lan}/{star}/{syn}",
             arguments = listOf(
                 navArgument("title") {
                     type = NavType.StringType
@@ -64,30 +64,38 @@ fun LazyVerticalGridActivityScreen(destinationViewModel: HomeScreenViewModel = v
                 navArgument("poster_path") {
                     type = NavType.StringType
                 },
+                navArgument("lan") {
+                    type = NavType.StringType
+                },
+                navArgument("star") {
+                    type = NavType.StringType
+                },
+                navArgument("syn") {
+                    type = NavType.StringType
+                },
             )
         ) {
             val title = it.arguments?.getString("title")!!
             val release = it.arguments?.getString("release_date")!!
             val poster = it.arguments?.getString("poster_path")!!
+            val language = it.arguments?.getString("lan")!!
+            val star = it.arguments?.getString("star")!!
+            val synopsis = it.arguments?.getString("syn")!!
 
             Log.d("LogPoster", poster.toString())
 
             MovieDetailsScreen(
-                navController,
                 poster,
                 title,
-                release
+                release,
+                language,
+                star,
+                synopsis
             )
         }
     }
 }
 
-
-
-@Composable
-private fun FoodApp() {
-    val navController = rememberNavController()
-}
 
 
 @Preview(showBackground = true)
