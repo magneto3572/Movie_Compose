@@ -46,8 +46,10 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeScreenViewModel)
 @Composable
 fun HomeMovieGrid(viewModel: HomeScreenViewModel, navController: NavHostController) {
     val scrollState = rememberLazyGridState()
-    val scrollOffset = derivedStateOf {
-        min(1f, 1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex))
+    val scrollOffset = remember {
+        derivedStateOf {
+            min(1f, 1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex))
+        }
     }
     val list = remember{ mutableStateListOf<result>()}
     val horiList = remember{ mutableStateListOf<result>()}
@@ -154,7 +156,11 @@ fun SetupLayout(
 fun HoriRow(scrollOffset: State<Float>, list: SnapshotStateList<result>) {
     val lazyState = rememberLazyListState()
     val imageSize by animateDpAsState(targetValue = max(0.dp, 230.dp * scrollOffset.value.toFloat()))
-    val value = max(0f, (1f * scrollOffset.value.toFloat()))
+    val value = remember {
+        derivedStateOf {
+            (max(0f, (1f * scrollOffset.value.toFloat())))
+        }
+    }
     var movietext = "Movie"
 
     if (imageSize == 0.dp){
@@ -171,7 +177,7 @@ fun HoriRow(scrollOffset: State<Float>, list: SnapshotStateList<result>) {
 
     Column(modifier = Modifier
         .graphicsLayer {
-            alpha = value
+            alpha = value.value
         }
         .height(imageSize)
         .fillMaxWidth()) {
